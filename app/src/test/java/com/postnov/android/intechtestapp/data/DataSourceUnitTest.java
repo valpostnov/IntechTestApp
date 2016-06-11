@@ -12,15 +12,15 @@ import rx.observers.TestSubscriber;
 public class DataSourceUnitTest
 {
     private DataSource mDataSource;
-    private String mLimit;
-    private String mFrom;
+    private int mLimit;
+    private int mFrom;
 
     @Before
     public void setupDataSource()
     {
         mDataSource = Injection.provideDataSource();
-        mLimit = "20";
-        mFrom = "1";
+        mLimit = 20;
+        mFrom = 1;
     }
 
     @Test

@@ -6,6 +6,7 @@
     <string name="artists_empty_view">Список пуст</string>
     <string name="loading_artists">Загрузка...</string>
     <string name="action_change_layout">Сменить вид</string>
-    <string name="main_title">Поп-артисты</string>
-    <string name="player_title">Воспроизведение</string>
+    <string name="main_title">Рингтоны</string>
+    <string name="player_title">Плеер</string>
+    <string name="action_load_more">Загрузить еще</string>
 </resources>

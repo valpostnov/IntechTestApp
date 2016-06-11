@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +25,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
     private View mEmptyView;
     private Context mContext;
     private int mItemId;
+    private int mLastListSize;
 
     private OnItemClickListener onItemClickListener;
 
@@ -35,6 +38,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
     {
         mContext = context;
         mItemId = itemId;
+        mMelodies = new ArrayList<>();
     }
 
     @Override
@@ -71,7 +75,15 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
 
     public void swapList(List<Melodie> newList)
     {
-        mMelodies = newList;
+        if (mLastListSize == newList.size())
+        {
+            mMelodies = newList;
+        }
+        else
+        {
+            mMelodies.addAll(newList);
+        }
+        mLastListSize = mMelodies.size();
         notifyDataSetChanged();
         mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
@@ -86,6 +98,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         public ImageView mArtistPic;
         public TextView mArtist;
         public TextView mMelodie;
+        public LinearLayout mContainer;
 
         public ViewHolder(View view)
         {
@@ -93,7 +106,8 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
             mArtistPic = (ImageView) view.findViewById(R.id.item_artist_pic);
             mArtist = (TextView) view.findViewById(R.id.item_artist_title);
             mMelodie = (TextView) view.findViewById(R.id.item_melodie_title);
-            view.setOnClickListener(this);
+            mContainer = (LinearLayout) view.findViewById(R.id.artist_container);
+            mContainer.setOnClickListener(this);
         }
 
         @Override

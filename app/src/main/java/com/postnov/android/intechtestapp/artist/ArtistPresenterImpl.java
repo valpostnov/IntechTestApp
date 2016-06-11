@@ -26,7 +26,7 @@ public class ArtistPresenterImpl implements ArtistPresenter
     }
 
     @Override
-    public void fetchArtists(String limit, String from)
+    public void fetchArtists(int limit, int from)
     {
         mView.showProgressDialog();
         mSubscriptions.add(mDataSource

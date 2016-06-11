@@ -9,4 +9,10 @@
         android:icon="@drawable/ic_view_module"
         app:showAsAction="ifRoom"
         />
+    <item
+        android:id="@+id/action_load_more"
+        android:title="@string/action_load_more"
+        android:orderInCategory="200"
+        app:showAsAction="never"
+        />
 </menu>

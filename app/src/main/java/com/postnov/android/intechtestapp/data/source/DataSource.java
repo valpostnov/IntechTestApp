@@ -1,6 +1,9 @@
 package com.postnov.android.intechtestapp.data.source;
 
+import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.data.entity.Response;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -9,5 +12,5 @@ import rx.Observable;
  */
 public interface DataSource
 {
-    Observable<Response> getMelodies(String limit, String from);
+    Observable<Response> getMelodies(int limit, int from);
 }

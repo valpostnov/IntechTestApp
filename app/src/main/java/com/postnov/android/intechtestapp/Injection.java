@@ -10,6 +10,6 @@ public class Injection
 {
     public static DataSource provideDataSource()
     {
-        return new DataSourceImpl();
+        return DataSourceImpl.getInstance();
     }
 }

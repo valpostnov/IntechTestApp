@@ -1,6 +1,9 @@
 package com.postnov.android.intechtestapp.api;
 
+import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.data.entity.Response;
+
+import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -12,5 +15,5 @@ import rx.Observable;
 public interface MelodiesApi
 {
     @GET("melodies")
-    Observable<Response> getMelodies(@Query("limit") String limit, @Query("from") String from);
+    Observable<Response> getMelodies(@Query("limit") int limit, @Query("from") int from);
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import java.util.List;
 public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdapter.OnItemClickListener
 {
     public static final String EXTRA_MELODIE = "extra_melodie_object";
+    private static final int SPAN_COUNT = 2;
 
     private ArtistsAdapter mAdapter;
     private ProgressDialog mProgressDialog;
@@ -46,6 +48,7 @@ public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdap
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         mPresenter = new ArtistPresenterImpl(Injection.provideDataSource());
     }
 
@@ -54,7 +57,7 @@ public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdap
     {
         super.onResume();
         mPresenter.bind(this);
-        mPresenter.fetchArtists("20", "2");
+        mPresenter.fetchArtists(20, 0);
     }
 
     @Override
@@ -108,6 +111,22 @@ public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdap
         startActivity(intent);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_load_more:
+
+                int loadedMelodies = mAdapter.getItemCount();
+                int nextTen = 10;
+
+                mPresenter.fetchArtists(nextTen, loadedMelodies + 1);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initViews(View view)
     {
         TextView emptyView = (TextView) view.findViewById(R.id.artists_emptyview);
@@ -117,7 +136,7 @@ public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdap
 
         if (layoutType == ArtistsActivity.LAYOUT_GRID)
         {
-            layoutManager = new GridLayoutManager(getContext(), 2);
+            layoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
             mAdapter = new ArtistsAdapter(getContext(), R.layout.item_grid_artist);
         }
         else
