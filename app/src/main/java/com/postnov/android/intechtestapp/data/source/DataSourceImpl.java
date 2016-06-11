@@ -14,7 +14,7 @@ import rx.Observable;
 public class DataSourceImpl implements DataSource
 {
     private MelodiesApi mApi;
-    private static final String ENDPOINT = "url";
+    private static final String ENDPOINT = "https://api-content-beeline.intech-global.com/public/marketplaces/1/tags/4/";
 
     public DataSourceImpl()
     {

@@ -1,0 +1,61 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/player_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/margin_medium"
+    android:paddingRight="@dimen/margin_medium">
+
+    <ImageView
+        android:id="@+id/player_album_pic"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/player_melodie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/abc_primary_text_material_light"
+            android:layout_marginLeft="@dimen/margin_medium"
+            />
+        <TextView
+            android:id="@+id/player_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/abc_primary_text_material_light"
+            android:layout_marginLeft="@dimen/margin_medium"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/play_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play_arrow"
+            app:fabSize="normal"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            app:borderWidth="1dp"
+            app:layout_anchorGravity="bottom|center_horizontal"
+            android:layout_margin="@dimen/fab_margin"
+            android:clickable="true"
+            />
+    </LinearLayout>
+</LinearLayout>

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">IntechTestApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="artists_empty_view">Список пуст</string>
+    <string name="loading_artists">Загрузка...</string>
+    <string name="action_change_layout">Сменить вид</string>
 </resources>

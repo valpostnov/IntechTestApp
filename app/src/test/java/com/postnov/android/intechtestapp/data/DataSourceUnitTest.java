@@ -9,8 +9,6 @@ import org.junit.Test;
 
 import rx.observers.TestSubscriber;
 
-import static org.junit.Assert.assertEquals;
-
 public class DataSourceUnitTest
 {
     private DataSource mDataSource;
