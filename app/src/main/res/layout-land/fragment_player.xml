@@ -1,4 +1,4 @@
-<LinearLayout
+<android.support.percent.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/player_root"
@@ -10,52 +10,59 @@
 
     <ImageView
         android:id="@+id/player_album_pic"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        app:layout_widthPercent="50%"
         android:scaleType="centerCrop"
-        android:layout_weight="1"
         android:layout_marginBottom="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
         />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/player_melodie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:layout_weight="1">
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:layout_toRightOf="@+id/player_album_pic" />
+    <TextView
+        android:id="@+id/player_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:textSize="16sp"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:layout_toRightOf="@+id/player_album_pic"
+        android:layout_below="@+id/player_melodie_title" />
 
-        <TextView
-            android:id="@+id/player_melodie_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/abc_primary_text_material_dark"
-            android:layout_marginLeft="@dimen/margin_medium"
-            />
-        <TextView
-            android:id="@+id/player_artist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/abc_primary_text_material_dark"
-            android:layout_marginLeft="@dimen/margin_medium"
-            />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/play_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_play_arrow"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        app:borderWidth="1dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:layout_toRightOf="@+id/player_album_pic"
+        android:layout_below="@+id/player_artist"
+        />
+    <ImageView
+        android:id="@+id/stop_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_stop"
+        android:scaleType="center"
+        android:clickable="true"
+        android:background="?selectableItemBackground"
+        android:layout_toRightOf="@+id/play_button"
+        android:layout_alignTop="@+id/play_button"
+        android:layout_alignBottom="@+id/play_button"
+        />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/play_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_play_arrow"
-            app:fabSize="normal"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"
-            app:borderWidth="1dp"
-            app:layout_anchorGravity="bottom|center_horizontal"
-            android:layout_margin="@dimen/fab_margin"
-            android:clickable="true"
-            />
-    </LinearLayout>
-</LinearLayout>
+</android.support.percent.PercentRelativeLayout>

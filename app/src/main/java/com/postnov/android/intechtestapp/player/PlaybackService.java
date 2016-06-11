@@ -6,14 +6,13 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 
-import com.postnov.android.intechtestapp.artist.ArtistsFragment;
-
 import java.io.IOException;
 
 public class PlaybackService extends Service implements MediaPlayer.OnPreparedListener
 {
     public static final String ACTION_PLAY = "com.postnov.action.PLAY";
     public static final String ACTION_PAUSE = "com.postnov.action.PAUSE";
+    public static final String ACTION_STOP = "com.postnov.action.STOP";
 
     private MediaPlayer mMediaPlayer;
     private int mCurrentPosition;
@@ -34,6 +33,10 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
 
             case ACTION_PAUSE:
                 pause();
+                break;
+
+            case ACTION_STOP:
+                stop();
                 break;
         }
 
@@ -87,7 +90,7 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
             mMediaPlayer.start();
             mCurrentPosition = 0;
         }
-        else if (mMediaPlayer == null)
+        else
         {
             initMediaPlayer(url);
         }
@@ -99,6 +102,15 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
         {
             mMediaPlayer.pause();
             mCurrentPosition = mMediaPlayer.getCurrentPosition();
+        }
+    }
+
+    private void stop()
+    {
+        if (mMediaPlayer != null)
+        {
+            mMediaPlayer.stop();
+            mCurrentPosition = 0;
         }
     }
 }

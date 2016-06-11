@@ -1,14 +1,13 @@
 package com.postnov.android.intechtestapp.player;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.artist.ArtistsFragment;

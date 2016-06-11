@@ -2,7 +2,6 @@ package com.postnov.android.intechtestapp.player;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +24,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 
     private enum PlayerStates
     {
-         PAUSE, PLAY
+         PAUSE, PLAY, STOP
     }
 
     private FloatingActionButton playPauseButton;
@@ -65,6 +65,13 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
+        switch (v.getId())
+        {
+            case R.id.stop_button:
+                mState = PlayerStates.STOP;
+                break;
+        }
+
         selectAction(mState);
         setButtonIcon(mState);
     }
@@ -78,6 +85,9 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         playPauseButton = (FloatingActionButton) view.findViewById(R.id.play_button);
         setButtonIcon(mState);
         playPauseButton.setOnClickListener(this);
+
+        ImageView stopPlayback = (ImageView) view.findViewById(R.id.stop_button);
+        stopPlayback.setOnClickListener(this);
 
         Glide.with(getContext()).load(mMelodie.getPicUrl()).into(albumPic);
         artistTextView.setText(mMelodie.getArtist());
@@ -99,6 +109,13 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         mContext.startService(intent);
     }
 
+    private void stop()
+    {
+        Intent intent = new Intent(mContext, PlaybackService.class);
+        intent.setAction(PlaybackService.ACTION_STOP);
+        mContext.startService(intent);
+    }
+
     private void selectAction(PlayerStates state)
     {
         switch (state)
@@ -112,6 +129,11 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
                 pause();
                 mState = PlayerStates.PAUSE;
                 break;
+
+            case STOP:
+                stop();
+                mState = PlayerStates.PAUSE;
+                break;
         }
     }
 
@@ -119,13 +141,12 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
     {
         switch (state)
         {
-            case PAUSE:
-                playPauseButton.setImageResource(R.drawable.ic_play_arrow);
-                break;
-
             case PLAY:
                 playPauseButton.setImageResource(R.drawable.ic_pause);
                 break;
+
+            default:
+                playPauseButton.setImageResource(R.drawable.ic_play_arrow);
         }
     }
 }

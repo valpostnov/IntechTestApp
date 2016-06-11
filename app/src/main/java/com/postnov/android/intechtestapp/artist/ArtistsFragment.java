@@ -18,7 +18,6 @@ import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.artist.interfaces.ArtistPresenter;
 import com.postnov.android.intechtestapp.artist.interfaces.ArtistView;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
-import com.postnov.android.intechtestapp.player.PlaybackService;
 import com.postnov.android.intechtestapp.player.PlayerActivity;
 import com.postnov.android.intechtestapp.utils.Utils;
 
@@ -27,11 +26,13 @@ import java.util.List;
 public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdapter.OnItemClickListener
 {
     public static final String EXTRA_MELODIE = "extra_melodie_object";
-    private static final int SPAN_COUNT = 2;
+    private static final int SPAN_COUNT_DEF = 2;
+    private static final int SPAN_COUNT_THREE = 3;
 
     private ArtistsAdapter mAdapter;
     private ProgressDialog mProgressDialog;
     private ArtistPresenter mPresenter;
+    private boolean isLandOrient;
 
     public ArtistsFragment() {}
 
@@ -49,6 +50,7 @@ public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdap
     {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        isLandOrient = getContext().getResources().getBoolean(R.bool.landscape_orient);
         mPresenter = new ArtistPresenterImpl(Injection.provideDataSource());
     }
 
@@ -136,7 +138,7 @@ public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdap
 
         if (layoutType == ArtistsActivity.LAYOUT_GRID)
         {
-            layoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
+            layoutManager = new GridLayoutManager(getContext(), isLandOrient ? SPAN_COUNT_THREE : SPAN_COUNT_DEF);
             mAdapter = new ArtistsAdapter(getContext(), R.layout.item_grid_artist);
         }
         else

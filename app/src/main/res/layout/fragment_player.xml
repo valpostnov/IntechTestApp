@@ -35,19 +35,35 @@
         android:textSize="16sp"
         android:textColor="@color/abc_primary_text_material_dark"
         />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/play_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_play_arrow"
-        app:fabSize="normal"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        app:borderWidth="1dp"
-        app:layout_anchorGravity="bottom|center_horizontal"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:gravity="center_horizontal">
 
-        />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/play_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play_arrow"
+            app:fabSize="normal"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            app:borderWidth="1dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:clickable="true" />
+
+        <ImageView
+            android:id="@+id/stop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_stop"
+            android:scaleType="center"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:background="?selectableItemBackground" />
+
+        </LinearLayout>
 </LinearLayout>

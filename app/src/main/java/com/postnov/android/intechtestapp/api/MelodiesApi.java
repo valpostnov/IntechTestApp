@@ -1,9 +1,6 @@
 package com.postnov.android.intechtestapp.api;
 
-import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.data.entity.Response;
-
-import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
