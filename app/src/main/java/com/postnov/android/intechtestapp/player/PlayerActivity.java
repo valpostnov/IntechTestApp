@@ -43,6 +43,7 @@ public class PlayerActivity extends AppCompatActivity
     private void initToolbar()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.player_toolbar);
+        toolbar.setTitle(R.string.player_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

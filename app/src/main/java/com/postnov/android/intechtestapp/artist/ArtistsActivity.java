@@ -84,6 +84,7 @@ public class ArtistsActivity extends AppCompatActivity
     private void initToolbar()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.artists_toolbar);
+        toolbar.setTitle(R.string.main_title);
         setSupportActionBar(toolbar);
     }
 
