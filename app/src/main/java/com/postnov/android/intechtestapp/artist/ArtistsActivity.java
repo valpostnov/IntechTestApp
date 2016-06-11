@@ -1,7 +1,6 @@
 package com.postnov.android.intechtestapp.artist;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.postnov.android.intechtestapp.R;
-import com.postnov.android.intechtestapp.player.PlaybackService;
 
 public class ArtistsActivity extends AppCompatActivity
 {
@@ -21,7 +19,7 @@ public class ArtistsActivity extends AppCompatActivity
     public static final int LAYOUT_LIST = 0;
     public static final int LAYOUT_GRID = 1;
     private static final String SHARED_PREF_NAME = "myPref";
-    private int mDefaultLayoutType;
+    private int mDefaultLayout;
     private SharedPreferences mSharedPreferences;
 
     @Override
@@ -32,11 +30,11 @@ public class ArtistsActivity extends AppCompatActivity
         initToolbar();
 
         mSharedPreferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        mDefaultLayoutType = getLayoutType();
+        mDefaultLayout = getLayoutType();
 
         if (savedInstanceState == null)
         {
-            initFragment(ArtistsFragment.newInstance(mDefaultLayoutType));
+            initFragment(ArtistsFragment.newInstance(mDefaultLayout));
         }
     }
 
@@ -48,6 +46,18 @@ public class ArtistsActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        int gridIcon = R.drawable.ic_view_module;
+        int listIcon = R.drawable.ic_view_list;
+
+        MenuItem item = menu.findItem(R.id.action_change_layout);
+        item.setIcon(mDefaultLayout == LAYOUT_LIST ? gridIcon : listIcon);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int itemId = item.getItemId();
@@ -55,15 +65,8 @@ public class ArtistsActivity extends AppCompatActivity
         {
             case R.id.action_change_layout:
 
-                if (mDefaultLayoutType == LAYOUT_LIST)
-                {
-                    initFragment(ArtistsFragment.newInstance(LAYOUT_GRID));
-                    setLayoutType(LAYOUT_GRID);
-
-                    return true;
-                }
-                initFragment(ArtistsFragment.newInstance(LAYOUT_LIST));
-                setLayoutType(LAYOUT_LIST);
+                initFragment(ArtistsFragment.newInstance(mDefaultLayout == LAYOUT_LIST ? LAYOUT_GRID : LAYOUT_LIST));
+                setLayoutType(mDefaultLayout == LAYOUT_LIST ? LAYOUT_GRID : LAYOUT_LIST);
 
                 return true;
 
@@ -96,6 +99,6 @@ public class ArtistsActivity extends AppCompatActivity
     private void setLayoutType(int type)
     {
         mSharedPreferences.edit().putInt(LAYOUT_TYPE, type).apply();
-        mDefaultLayoutType = type;
+        mDefaultLayout = type;
     }
 }
