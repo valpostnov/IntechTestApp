@@ -73,7 +73,7 @@ public class ArtistsFragment extends Fragment implements ArtistView, ArtistsAdap
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.fragment_list_artist, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
         initViews(rootView);
         return rootView;
     }
