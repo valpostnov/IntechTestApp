@@ -47,23 +47,23 @@
             android:id="@+id/play_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_play_arrow"
+            android:src="@drawable/ic_play"
             app:fabSize="normal"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
             app:borderWidth="1dp"
             android:layout_margin="@dimen/fab_margin"
-            android:clickable="true" />
+            android:clickable="true"
+            />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/stop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_stop"
             android:scaleType="center"
             android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:background="?selectableItemBackground" />
+            android:src="@drawable/ic_stop"
+            />
 
         </LinearLayout>
 </LinearLayout>

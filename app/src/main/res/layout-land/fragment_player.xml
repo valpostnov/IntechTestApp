@@ -38,31 +38,32 @@
         android:layout_toRightOf="@+id/player_album_pic"
         android:layout_below="@+id/player_melodie_title" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/play_button"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_play_arrow"
-        app:fabSize="normal"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        app:borderWidth="1dp"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
         android:layout_toRightOf="@+id/player_album_pic"
         android:layout_below="@+id/player_artist"
-        />
-    <ImageView
-        android:id="@+id/stop_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_stop"
-        android:scaleType="center"
-        android:clickable="true"
-        android:background="?selectableItemBackground"
-        android:layout_toRightOf="@+id/play_button"
-        android:layout_alignTop="@+id/play_button"
-        android:layout_alignBottom="@+id/play_button"
-        />
+        android:gravity="center_vertical">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/play_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play"
+            app:fabSize="normal"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            app:borderWidth="1dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:clickable="true"
+            />
+        <ImageButton
+            android:id="@+id/stop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_stop"
+            />
+    </LinearLayout>
 
 </android.support.percent.PercentRelativeLayout>

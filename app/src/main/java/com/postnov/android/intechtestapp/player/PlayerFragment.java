@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,14 +23,14 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 {
     public static final String EXTRA_DEMO_URL = "extra_demo_url";
 
-    private enum PlayerStates
+    private enum States
     {
          PAUSE, PLAY, STOP
     }
 
     private FloatingActionButton playPauseButton;
     private Context mContext;
-    private PlayerStates mState;
+    private States mState;
     private Melodie mMelodie;
 
     public PlayerFragment() {}
@@ -51,7 +52,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         setRetainInstance(true);
         mContext = getContext();
         mMelodie = getArguments().getParcelable(ArtistsFragment.EXTRA_MELODIE);
-        selectAction(PlayerStates.PAUSE);
+        play();
     }
 
     @Override
@@ -68,12 +69,15 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.stop_button:
-                mState = PlayerStates.STOP;
+                stop();
+                setButtonIcon();
+                break;
+
+            case R.id.play_button:
+                selectAction();
+                setButtonIcon();
                 break;
         }
-
-        selectAction(mState);
-        setButtonIcon(mState);
     }
 
     private void initViews(View view)
@@ -83,10 +87,10 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         TextView melodieTextView = (TextView) view.findViewById(R.id.player_melodie_title);
 
         playPauseButton = (FloatingActionButton) view.findViewById(R.id.play_button);
-        setButtonIcon(mState);
         playPauseButton.setOnClickListener(this);
+        setButtonIcon();
 
-        ImageView stopPlayback = (ImageView) view.findViewById(R.id.stop_button);
+        ImageButton stopPlayback = (ImageButton) view.findViewById(R.id.stop_button);
         stopPlayback.setOnClickListener(this);
 
         Glide.with(getContext()).load(mMelodie.getPicUrl()).into(albumPic);
@@ -96,6 +100,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 
     private void play()
     {
+        setState(States.PLAY);
         Intent intent = new Intent(mContext, PlaybackService.class);
         intent.setAction(PlaybackService.ACTION_PLAY);
         intent.putExtra(EXTRA_DEMO_URL, mMelodie.getDemoUrl());
@@ -104,6 +109,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 
     private void pause()
     {
+        setState(States.PAUSE);
         Intent intent = new Intent(mContext, PlaybackService.class);
         intent.setAction(PlaybackService.ACTION_PAUSE);
         mContext.startService(intent);
@@ -111,42 +117,45 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 
     private void stop()
     {
+        setState(States.STOP);
         Intent intent = new Intent(mContext, PlaybackService.class);
         intent.setAction(PlaybackService.ACTION_STOP);
         mContext.startService(intent);
     }
 
-    private void selectAction(PlayerStates state)
+    private void selectAction()
     {
-        switch (state)
+        switch (mState)
         {
-            case PAUSE:
-                play();
-                mState = PlayerStates.PLAY;
-                break;
-
             case PLAY:
                 pause();
-                mState = PlayerStates.PAUSE;
+                break;
+
+            case PAUSE:
+                play();
                 break;
 
             case STOP:
-                stop();
-                mState = PlayerStates.PAUSE;
+                play();
                 break;
         }
     }
 
-    private void setButtonIcon(PlayerStates state)
+    private void setButtonIcon()
     {
-        switch (state)
+        switch (mState)
         {
             case PLAY:
                 playPauseButton.setImageResource(R.drawable.ic_pause);
                 break;
 
             default:
-                playPauseButton.setImageResource(R.drawable.ic_play_arrow);
+                playPauseButton.setImageResource(R.drawable.ic_play);
         }
+    }
+
+    private void setState(States state)
+    {
+        mState = state;
     }
 }
