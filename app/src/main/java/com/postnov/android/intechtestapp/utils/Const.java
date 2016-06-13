@@ -5,6 +5,9 @@ package com.postnov.android.intechtestapp.utils;
  */
 public interface Const
 {
-    String ERROR_UNKNOWN = "Что-то пошло не так, перезапустите приложение.";
-    String ERROR_NO_CONNECTION = "Отсутствует подключение к интернету";
+    String MSG_ERROR_UNKNOWN = "Что-то пошло не так, перезапустите приложение.";
+    String MSG_ERROR_NO_CONNECTION = "Отсутствует подключение к интернету";
+
+    int ERROR_NO_CONNECTION = -10;
+    int ERROR_UNKNOWN = -1;
 }

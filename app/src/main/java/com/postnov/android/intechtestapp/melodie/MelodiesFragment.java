@@ -42,11 +42,11 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
 
     public MelodiesFragment() {}
 
-    public static MelodiesFragment newInstance(int layoutType)
+    public static MelodiesFragment newInstance(boolean isList)
     {
         MelodiesFragment fragment = new MelodiesFragment();
         Bundle args = new Bundle();
-        args.putInt(MelodiesActivity.LAYOUT_TYPE, layoutType);
+        args.putBoolean(MelodiesActivity.LIST_LAYOUT_TYPE, isList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +55,6 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         isLandOrient = getContext().getResources().getBoolean(R.bool.landscape_orient);
         mPresenter = new MelodiesPresenterImpl(
                 Injection.provideDataSource(),
@@ -121,38 +120,24 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
         startActivity(intent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.action_load_more:
-
-                int loadedMelodies = mMelodiesAdapter.getItemCount();
-                mPresenter.fetchMelodies(NEXT_COUNT_MELODIES, loadedMelodies + 1);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void initViews(View view)
     {
         View emptyView = view.findViewById(R.id.melodies_emptyview);
         Button refreshButton = (Button) view.findViewById(R.id.refresh_button);
         refreshButton.setOnClickListener(this);
 
-        int layoutType = getArguments().getInt(MelodiesActivity.LAYOUT_TYPE);
+        boolean isListLayoutType = getArguments().getBoolean(MelodiesActivity.LIST_LAYOUT_TYPE);
         RecyclerView.LayoutManager layoutManager;
 
-        if (layoutType == MelodiesActivity.LAYOUT_GRID)
-        {
-            layoutManager = new GridLayoutManager(getContext(), isLandOrient ? SPAN_COUNT_THREE : SPAN_COUNT_DEF);
-            mMelodiesAdapter = new MelodiesAdapter(getContext(), R.layout.item_grid_melodies);
-        }
-        else
+        if (isListLayoutType)
         {
             layoutManager = new LinearLayoutManager(getContext());
             mMelodiesAdapter = new MelodiesAdapter(getContext(), R.layout.item_list_melodies);
+        }
+        else
+        {
+            layoutManager = new GridLayoutManager(getContext(), isLandOrient ? SPAN_COUNT_THREE : SPAN_COUNT_DEF);
+            mMelodiesAdapter = new MelodiesAdapter(getContext(), R.layout.item_grid_melodies);
         }
 
         mMelodiesAdapter.setOnItemClickListener(this);

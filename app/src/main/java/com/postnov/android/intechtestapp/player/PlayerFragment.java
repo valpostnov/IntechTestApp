@@ -1,11 +1,14 @@
 package com.postnov.android.intechtestapp.player;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,13 @@ import com.bumptech.glide.Glide;
 import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
+import com.postnov.android.intechtestapp.utils.Utils;
+
+import static com.postnov.android.intechtestapp.player.PlaybackService.EXTENDED_DATA_STATUS;
+import static com.postnov.android.intechtestapp.utils.Const.ERROR_NO_CONNECTION;
+import static com.postnov.android.intechtestapp.utils.Const.ERROR_UNKNOWN;
+import static com.postnov.android.intechtestapp.utils.Const.MSG_ERROR_NO_CONNECTION;
+import static com.postnov.android.intechtestapp.utils.Const.MSG_ERROR_UNKNOWN;
 
 public class PlayerFragment extends Fragment implements View.OnClickListener
 {
@@ -27,6 +37,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
          PAUSE, PLAY, STOP
     }
 
+    private PlaybackStateReceiver mPlaybackStateReceiver;
     private FloatingActionButton playPauseButton;
     private Context mContext;
     private States mState;
@@ -60,6 +71,20 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_player, container, false);
         initViews(view);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        registerLBReceiver();
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        unregisterLBReceiver();
+        super.onDestroyView();
     }
 
     @Override
@@ -156,5 +181,45 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
     private void setState(States state)
     {
         mState = state;
+    }
+
+    private void registerLBReceiver()
+    {
+        IntentFilter statusFilter = new IntentFilter(PlaybackService.BROADCAST_ACTION);
+        statusFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        mPlaybackStateReceiver = new PlaybackStateReceiver();
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(mPlaybackStateReceiver, statusFilter);
+    }
+
+    private void unregisterLBReceiver()
+    {
+        if (mPlaybackStateReceiver != null)
+        {
+            LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mPlaybackStateReceiver);
+            mPlaybackStateReceiver = null;
+        }
+    }
+
+    private class PlaybackStateReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            int statusCode = intent.getIntExtra(EXTENDED_DATA_STATUS, ERROR_UNKNOWN);
+
+            switch (statusCode)
+            {
+                case ERROR_NO_CONNECTION:
+
+                    Utils.showToast(context, MSG_ERROR_NO_CONNECTION);
+                    break;
+
+                default:
+                    Utils.showToast(context, MSG_ERROR_UNKNOWN);
+            }
+
+            setState(States.STOP);
+            setPlayButtonIcon();
+        }
     }
 }

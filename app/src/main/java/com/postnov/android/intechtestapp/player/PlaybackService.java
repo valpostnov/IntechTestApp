@@ -8,7 +8,13 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.postnov.android.intechtestapp.utils.Const;
+import com.postnov.android.intechtestapp.utils.NetworkManager;
+
 import java.io.IOException;
+
+import static com.postnov.android.intechtestapp.utils.Const.ERROR_NO_CONNECTION;
+import static com.postnov.android.intechtestapp.utils.Const.ERROR_UNKNOWN;
 
 public class PlaybackService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener
 {
@@ -21,31 +27,48 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
     private static final String TAG = "PlaybackService";
 
     private MediaPlayer mMediaPlayer;
+    private NetworkManager mNetworkManager;
     private int mCurrentPosition;
 
     public PlaybackService() {}
 
     @Override
+    public void onCreate()
+    {
+        super.onCreate();
+        mNetworkManager = NetworkManager.getInstance(this);
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        String url = intent.getStringExtra(PlayerFragment.EXTRA_DEMO_URL);
-        String action = intent.getAction();
-        switch (action)
+        if (mNetworkManager.networkIsAvailable())
         {
-            case ACTION_PLAY:
-                start(url);
-                break;
+            String url = intent.getStringExtra(PlayerFragment.EXTRA_DEMO_URL);
+            String action = intent.getAction();
 
-            case ACTION_PAUSE:
-                pause();
-                break;
+            switch (action)
+            {
+                case ACTION_PLAY:
+                    start(url);
+                    break;
 
-            case ACTION_STOP:
-                stop();
-                break;
+                case ACTION_PAUSE:
+                    pause();
+                    break;
+
+                case ACTION_STOP:
+                    stop();
+                    break;
+            }
+
+            return START_STICKY;
         }
 
-        return START_STICKY;
+        sendStatus(ERROR_NO_CONNECTION);
+        stopSelf(startId);
+
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -78,7 +101,7 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
         }
         catch (IOException e)
         {
-            sendStatus(-1);
+            sendStatus(ERROR_UNKNOWN);
             Log.e(TAG, e.getMessage());
         }
     }
@@ -94,7 +117,7 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
     {
         Log.e(TAG, "error: " + extra);
         sendStatus(extra);
-        player.reset();
+        stopSelf();
         return true;
     }
 

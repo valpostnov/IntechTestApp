@@ -2,6 +2,7 @@ package com.postnov.android.intechtestapp.melodie;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,19 +29,8 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
     private int mItemId;
     private int mLastListSize;
 
-    private OnItemClickListener onItemClickListener;
-
-    public interface OnItemClickListener
-    {
-        void onItemClick(View view, int position);
-    }
-
-    private OnEndlessListener endlessListener;
-
-    public interface OnEndlessListener
-    {
-        void loadMore(int position);
-    }
+    private OnItemClickListener mOnItemClickListener;
+    private OnEndlessListener mOnEndlessListener;
 
     public MelodiesAdapter(Context context, int itemId)
     {
@@ -67,7 +58,7 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
 
         if (position == getItemCount() - 1)
         {
-            endlessListener.loadMore(position);
+            mOnEndlessListener.loadMore(position);
         }
     }
 
@@ -125,17 +116,27 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
         public void onClick(View v)
         {
             int adapterPosition = getAdapterPosition();
-            onItemClickListener.onItemClick(v, adapterPosition);
+            mOnItemClickListener.onItemClick(v, adapterPosition);
         }
     }
 
     public void setOnItemClickListener(OnItemClickListener listener)
     {
-        onItemClickListener = listener;
+        mOnItemClickListener = listener;
     }
 
     public void setOnEndlessListener(OnEndlessListener listener)
     {
-        endlessListener = listener;
+        mOnEndlessListener = listener;
+    }
+
+    public interface OnItemClickListener
+    {
+        void onItemClick(View view, int position);
+    }
+
+    public interface OnEndlessListener
+    {
+        void loadMore(int position);
     }
 }

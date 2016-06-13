@@ -49,6 +49,7 @@ public class MelodiesPresenterImpl implements MelodiesPresenter
                         public void onError(Throwable e) 
                         {
                             mView.hideProgressDialog();
+                            mView.showMelodies(null);
                             mView.showError(e.getMessage());
                         }
 
@@ -60,7 +61,8 @@ public class MelodiesPresenterImpl implements MelodiesPresenter
         }
         else 
         {
-            mView.showError(Const.ERROR_NO_CONNECTION);
+            mView.showError(Const.MSG_ERROR_NO_CONNECTION);
+            mView.showMelodies(null);
         }
     }
 

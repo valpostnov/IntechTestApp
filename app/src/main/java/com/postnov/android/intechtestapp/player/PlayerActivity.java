@@ -17,15 +17,12 @@ import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
 
 public class PlayerActivity extends AppCompatActivity
 {
-    private PlaybackStateReceiver mPlaybackStateReceiver;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         initToolbar();
-        initLBReceiver();
 
         Melodie melodie = getIntent().getParcelableExtra(MelodiesFragment.EXTRA_MELODIE);
 
@@ -33,17 +30,6 @@ public class PlayerActivity extends AppCompatActivity
         {
             initFragment(PlayerFragment.newInstance(melodie));
         }
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        if (mPlaybackStateReceiver != null)
-        {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(mPlaybackStateReceiver);
-            mPlaybackStateReceiver = null;
-        }
-        super.onDestroy();
     }
 
     private void initFragment(Fragment fragment)
@@ -81,13 +67,5 @@ public class PlayerActivity extends AppCompatActivity
         Intent intent = new Intent(this, PlaybackService.class);
         stopService(intent);
         super.onBackPressed();
-    }
-
-    private void initLBReceiver()
-    {
-        IntentFilter statusFilter = new IntentFilter(PlaybackService.BROADCAST_ACTION);
-        statusFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        mPlaybackStateReceiver = new PlaybackStateReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mPlaybackStateReceiver, statusFilter);
     }
 }

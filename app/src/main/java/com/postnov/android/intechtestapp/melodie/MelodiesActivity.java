@@ -15,11 +15,9 @@ import com.postnov.android.intechtestapp.R;
 
 public class MelodiesActivity extends AppCompatActivity
 {
-    public static final String LAYOUT_TYPE = "layout_type";
-    public static final int LAYOUT_LIST = 0;
-    public static final int LAYOUT_GRID = 1;
+    public static final String LIST_LAYOUT_TYPE = "list_type";
+    private boolean isListLayoutType;
     private static final String SHARED_PREF_NAME = "myPref";
-    private int mDefaultLayout;
     private SharedPreferences mSharedPreferences;
 
     @Override
@@ -30,11 +28,11 @@ public class MelodiesActivity extends AppCompatActivity
         initToolbar();
 
         mSharedPreferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        mDefaultLayout = getLayoutType();
+        isListLayoutType = getLayoutType();
 
         if (savedInstanceState == null)
         {
-            initFragment(MelodiesFragment.newInstance(mDefaultLayout));
+            initFragment(MelodiesFragment.newInstance(isListLayoutType));
         }
     }
 
@@ -52,7 +50,7 @@ public class MelodiesActivity extends AppCompatActivity
         int listIcon = R.drawable.ic_view_list;
 
         MenuItem item = menu.findItem(R.id.action_change_layout);
-        item.setIcon(mDefaultLayout == LAYOUT_LIST ? gridIcon : listIcon);
+        item.setIcon(isListLayoutType ? gridIcon : listIcon);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -65,8 +63,8 @@ public class MelodiesActivity extends AppCompatActivity
         {
             case R.id.action_change_layout:
 
-                initFragment(MelodiesFragment.newInstance(mDefaultLayout == LAYOUT_LIST ? LAYOUT_GRID : LAYOUT_LIST));
-                setLayoutType(mDefaultLayout == LAYOUT_LIST ? LAYOUT_GRID : LAYOUT_LIST);
+                initFragment(MelodiesFragment.newInstance(!isListLayoutType));
+                setLayoutType(!isListLayoutType);
 
                 return true;
 
@@ -91,14 +89,14 @@ public class MelodiesActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
     }
 
-    private int getLayoutType()
+    private boolean getLayoutType()
     {
-        return mSharedPreferences.getInt(LAYOUT_TYPE, LAYOUT_LIST);
+        return mSharedPreferences.getBoolean(LIST_LAYOUT_TYPE, true);
     }
 
-    private void setLayoutType(int type)
+    private void setLayoutType(boolean type)
     {
-        mSharedPreferences.edit().putInt(LAYOUT_TYPE, type).apply();
-        mDefaultLayout = type;
+        mSharedPreferences.edit().putBoolean(LIST_LAYOUT_TYPE, type).apply();
+        isListLayoutType = type;
     }
 }
