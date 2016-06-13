@@ -1,11 +1,7 @@
 package com.postnov.android.intechtestapp.data.source;
 
 import com.postnov.android.intechtestapp.api.MelodiesApi;
-import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.data.entity.Response;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -43,7 +39,7 @@ public class DataSourceImpl implements DataSource
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
-        mApi = retrofit.create(MelodiesApi.class);;
+        mApi = retrofit.create(MelodiesApi.class);
     }
 
     @Override
@@ -53,10 +49,11 @@ public class DataSourceImpl implements DataSource
         {
             return Observable.just(mResponseCache);
         }
-        return fetchAndSave(limit, from);
+
+        return fetchAndCache(limit, from);
     }
 
-    private Observable<Response> fetchAndSave(int limit, int from)
+    private Observable<Response> fetchAndCache(int limit, int from)
     {
         return mApi.getMelodies(limit, from).doOnNext(new Action1<Response>()
         {

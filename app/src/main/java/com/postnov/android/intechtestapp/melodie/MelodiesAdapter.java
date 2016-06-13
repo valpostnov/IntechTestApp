@@ -34,6 +34,13 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
         void onItemClick(View view, int position);
     }
 
+    private OnEndlessListener endlessListener;
+
+    public interface OnEndlessListener
+    {
+        void loadMore(int position);
+    }
+
     public MelodiesAdapter(Context context, int itemId)
     {
         mContext = context;
@@ -57,6 +64,11 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
         holder.mMelodie.setText(melodie.getTitle());
 
         Glide.with(mContext).load(melodie.getPicUrl()).into(holder.mArtistPic);
+
+        if (position == getItemCount() - 1)
+        {
+            endlessListener.loadMore(position);
+        }
     }
 
     @Override
@@ -73,7 +85,7 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
 
     public void swapList(List<Melodie> newList)
     {
-        if (mLastListSize == newList.size())
+        if (mLastListSize == 0 || mLastListSize == newList.size())
         {
             mMelodies = newList;
         }
@@ -81,8 +93,9 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
         {
             mMelodies.addAll(newList);
         }
-        mLastListSize = mMelodies.size();
+
         notifyDataSetChanged();
+        mLastListSize = mMelodies.size();
         mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
@@ -119,5 +132,10 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
     public void setOnItemClickListener(OnItemClickListener listener)
     {
         onItemClickListener = listener;
+    }
+
+    public void setOnEndlessListener(OnEndlessListener listener)
+    {
+        endlessListener = listener;
     }
 }

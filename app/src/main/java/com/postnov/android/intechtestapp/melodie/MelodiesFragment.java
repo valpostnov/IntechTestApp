@@ -12,20 +12,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.postnov.android.intechtestapp.Injection;
 import com.postnov.android.intechtestapp.R;
+import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.melodie.interfaces.MelodiesPresenter;
 import com.postnov.android.intechtestapp.melodie.interfaces.MelodiesView;
-import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.player.PlayerActivity;
 import com.postnov.android.intechtestapp.utils.NetworkManager;
 import com.postnov.android.intechtestapp.utils.Utils;
 
 import java.util.List;
 
-public class MelodiesFragment extends Fragment implements MelodiesView, MelodiesAdapter.OnItemClickListener, View.OnClickListener
+public class MelodiesFragment extends Fragment implements MelodiesView,
+        MelodiesAdapter.OnItemClickListener,
+        View.OnClickListener,
+        MelodiesAdapter.OnEndlessListener
 {
     public static final String EXTRA_MELODIE = "extra_melodie_object";
     private static final int SPAN_COUNT_DEF = 2;
@@ -155,6 +157,7 @@ public class MelodiesFragment extends Fragment implements MelodiesView, Melodies
 
         mMelodiesAdapter.setOnItemClickListener(this);
         mMelodiesAdapter.setEmptyView(emptyView);
+        mMelodiesAdapter.setOnEndlessListener(this);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.melodies_recyclerview);
         recyclerView.setAdapter(mMelodiesAdapter);
@@ -170,5 +173,11 @@ public class MelodiesFragment extends Fragment implements MelodiesView, Melodies
     public void onClick(View v)
     {
         mPresenter.fetchMelodies(START_COUNT_MELODIES, 0);
+    }
+
+    @Override
+    public void loadMore(int position)
+    {
+        mPresenter.fetchMelodies(NEXT_COUNT_MELODIES, position + 1);
     }
 }

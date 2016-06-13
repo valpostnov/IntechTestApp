@@ -1,10 +1,9 @@
 package com.postnov.android.intechtestapp.melodie;
 
-import com.postnov.android.intechtestapp.R;
-import com.postnov.android.intechtestapp.melodie.interfaces.MelodiesPresenter;
-import com.postnov.android.intechtestapp.melodie.interfaces.MelodiesView;
 import com.postnov.android.intechtestapp.data.entity.Response;
 import com.postnov.android.intechtestapp.data.source.DataSource;
+import com.postnov.android.intechtestapp.melodie.interfaces.MelodiesPresenter;
+import com.postnov.android.intechtestapp.melodie.interfaces.MelodiesView;
 import com.postnov.android.intechtestapp.utils.Const;
 import com.postnov.android.intechtestapp.utils.NetworkManager;
 

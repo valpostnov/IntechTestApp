@@ -12,8 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.postnov.android.intechtestapp.R;
-import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
+import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
 
 public class PlayerActivity extends AppCompatActivity
 {

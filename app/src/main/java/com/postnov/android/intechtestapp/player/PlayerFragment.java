@@ -10,17 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.postnov.android.intechtestapp.R;
-import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
-import com.postnov.android.intechtestapp.utils.Const;
-import com.postnov.android.intechtestapp.utils.NetworkManager;
-import com.postnov.android.intechtestapp.utils.Utils;
+import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
 
 public class PlayerFragment extends Fragment implements View.OnClickListener
 {
