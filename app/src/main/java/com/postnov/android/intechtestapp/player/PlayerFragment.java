@@ -16,8 +16,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.postnov.android.intechtestapp.R;
-import com.postnov.android.intechtestapp.artist.ArtistsFragment;
+import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
+import com.postnov.android.intechtestapp.utils.Const;
+import com.postnov.android.intechtestapp.utils.NetworkManager;
+import com.postnov.android.intechtestapp.utils.Utils;
 
 public class PlayerFragment extends Fragment implements View.OnClickListener
 {
@@ -39,7 +42,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
     {
         PlayerFragment fragment = new PlayerFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ArtistsFragment.EXTRA_MELODIE, melodie);
+        args.putParcelable(MelodiesFragment.EXTRA_MELODIE, melodie);
         fragment.setArguments(args);
 
         return fragment;
@@ -51,7 +54,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         mContext = getContext();
-        mMelodie = getArguments().getParcelable(ArtistsFragment.EXTRA_MELODIE);
+        mMelodie = getArguments().getParcelable(MelodiesFragment.EXTRA_MELODIE);
         play();
     }
 
@@ -70,12 +73,12 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         {
             case R.id.stop_button:
                 stop();
-                setButtonIcon();
+                setPlayButtonIcon();
                 break;
 
             case R.id.play_button:
                 selectAction();
-                setButtonIcon();
+                setPlayButtonIcon();
                 break;
         }
     }
@@ -83,19 +86,19 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
     private void initViews(View view)
     {
         ImageView albumPic = (ImageView) view.findViewById(R.id.player_album_pic);
-        TextView artistTextView = (TextView) view.findViewById(R.id.player_artist);
-        TextView melodieTextView = (TextView) view.findViewById(R.id.player_melodie_title);
+        TextView artist = (TextView) view.findViewById(R.id.player_artist);
+        TextView melodie = (TextView) view.findViewById(R.id.player_melodie_title);
 
         playPauseButton = (FloatingActionButton) view.findViewById(R.id.play_button);
         playPauseButton.setOnClickListener(this);
-        setButtonIcon();
+        setPlayButtonIcon();
 
-        ImageButton stopPlayback = (ImageButton) view.findViewById(R.id.stop_button);
+        Button stopPlayback = (Button) view.findViewById(R.id.stop_button);
         stopPlayback.setOnClickListener(this);
 
         Glide.with(getContext()).load(mMelodie.getPicUrl()).into(albumPic);
-        artistTextView.setText(mMelodie.getArtist());
-        melodieTextView.setText(mMelodie.getTitle());
+        artist.setText(mMelodie.getArtist());
+        melodie.setText(mMelodie.getTitle());
     }
 
     private void play()
@@ -141,7 +144,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void setButtonIcon()
+    private void setPlayButtonIcon()
     {
         switch (mState)
         {

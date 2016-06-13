@@ -1,4 +1,4 @@
-package com.postnov.android.intechtestapp.artist.interfaces;
+package com.postnov.android.intechtestapp.melodie.interfaces;
 
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 
@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Created by platon on 10.06.2016.
  */
-public interface ArtistView
+public interface MelodiesView
 {
-    void showArtists(List<Melodie> melodies);
+    void showMelodies(List<Melodie> melodies);
     void showProgressDialog();
     void hideProgressDialog();
     void showError(String error);

@@ -19,8 +19,8 @@ public class DataSourceUnitTest
     public void setupDataSource()
     {
         mDataSource = Injection.provideDataSource();
-        mLimit = 20;
-        mFrom = 1;
+        mLimit = 10;
+        mFrom = 21;
     }
 
     @Test

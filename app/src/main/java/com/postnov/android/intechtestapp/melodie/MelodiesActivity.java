@@ -1,4 +1,4 @@
-package com.postnov.android.intechtestapp.artist;
+package com.postnov.android.intechtestapp.melodie;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import com.postnov.android.intechtestapp.R;
 
-public class ArtistsActivity extends AppCompatActivity
+public class MelodiesActivity extends AppCompatActivity
 {
     public static final String LAYOUT_TYPE = "layout_type";
     public static final int LAYOUT_LIST = 0;
@@ -26,7 +26,7 @@ public class ArtistsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_artists);
+        setContentView(R.layout.activity_melodies);
         initToolbar();
 
         mSharedPreferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -34,7 +34,7 @@ public class ArtistsActivity extends AppCompatActivity
 
         if (savedInstanceState == null)
         {
-            initFragment(ArtistsFragment.newInstance(mDefaultLayout));
+            initFragment(MelodiesFragment.newInstance(mDefaultLayout));
         }
     }
 
@@ -65,7 +65,7 @@ public class ArtistsActivity extends AppCompatActivity
         {
             case R.id.action_change_layout:
 
-                initFragment(ArtistsFragment.newInstance(mDefaultLayout == LAYOUT_LIST ? LAYOUT_GRID : LAYOUT_LIST));
+                initFragment(MelodiesFragment.newInstance(mDefaultLayout == LAYOUT_LIST ? LAYOUT_GRID : LAYOUT_LIST));
                 setLayoutType(mDefaultLayout == LAYOUT_LIST ? LAYOUT_GRID : LAYOUT_LIST);
 
                 return true;

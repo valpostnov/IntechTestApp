@@ -1,4 +1,4 @@
-package com.postnov.android.intechtestapp.artist;
+package com.postnov.android.intechtestapp.melodie;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by platon on 10.06.2016.
  */
-public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHolder>
+public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHolder>
 {
     private List<Melodie> mMelodies;
     private View mEmptyView;
@@ -34,7 +34,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         void onItemClick(View view, int position);
     }
 
-    public ArtistsAdapter(Context context, int itemId)
+    public MelodiesAdapter(Context context, int itemId)
     {
         mContext = context;
         mItemId = itemId;
@@ -56,9 +56,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         holder.mArtist.setText(melodie.getArtist());
         holder.mMelodie.setText(melodie.getTitle());
 
-        Glide.with(mContext)
-                .load(melodie.getPicUrl())
-                .into(holder.mArtistPic);
+        Glide.with(mContext).load(melodie.getPicUrl()).into(holder.mArtistPic);
     }
 
     @Override
