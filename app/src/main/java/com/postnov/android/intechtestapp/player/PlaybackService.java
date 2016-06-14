@@ -16,7 +16,8 @@ import java.io.IOException;
 import static com.postnov.android.intechtestapp.utils.Const.ERROR_NO_CONNECTION;
 import static com.postnov.android.intechtestapp.utils.Const.ERROR_UNKNOWN;
 
-public class PlaybackService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener
+public class PlaybackService extends Service implements MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener
 {
     public static final String ACTION_PLAY = "com.postnov.action.PLAY";
     public static final String ACTION_PAUSE = "com.postnov.action.PAUSE";
@@ -100,6 +101,7 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.setOnPreparedListener(this);
             mMediaPlayer.setOnErrorListener(this);
+            mMediaPlayer.setOnCompletionListener(this);
             mMediaPlayer.setDataSource(url);
             mMediaPlayer.prepareAsync();
         }
@@ -124,6 +126,12 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
         sendStatus(extra);
         stopSelf();
         return true;
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp)
+    {
+        sendStatus(STOP);
     }
 
     private void start(String url)
