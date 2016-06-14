@@ -23,6 +23,9 @@ import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
 import com.postnov.android.intechtestapp.utils.Utils;
 
 import static com.postnov.android.intechtestapp.player.PlaybackService.EXTENDED_DATA_STATUS;
+import static com.postnov.android.intechtestapp.player.PlaybackService.PAUSE;
+import static com.postnov.android.intechtestapp.player.PlaybackService.PLAY;
+import static com.postnov.android.intechtestapp.player.PlaybackService.STOP;
 import static com.postnov.android.intechtestapp.utils.Const.ERROR_NO_CONNECTION;
 import static com.postnov.android.intechtestapp.utils.Const.ERROR_UNKNOWN;
 import static com.postnov.android.intechtestapp.utils.Const.MSG_ERROR_NO_CONNECTION;
@@ -62,6 +65,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         setRetainInstance(true);
         mContext = getContext();
         mMelodie = getArguments().getParcelable(MelodiesFragment.EXTRA_MELODIE);
+        setState(States.PLAY);
         play();
     }
 
@@ -94,12 +98,10 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         {
             case R.id.stop_button:
                 stop();
-                setPlayButtonIcon();
                 break;
 
             case R.id.play_button:
                 selectAction();
-                setPlayButtonIcon();
                 break;
         }
     }
@@ -124,7 +126,6 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 
     private void play()
     {
-        setState(States.PLAY);
         Intent intent = new Intent(mContext, PlaybackService.class);
         intent.setAction(PlaybackService.ACTION_PLAY);
         intent.putExtra(EXTRA_DEMO_URL, mMelodie.getDemoUrl());
@@ -133,7 +134,6 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 
     private void pause()
     {
-        setState(States.PAUSE);
         Intent intent = new Intent(mContext, PlaybackService.class);
         intent.setAction(PlaybackService.ACTION_PAUSE);
         mContext.startService(intent);
@@ -141,7 +141,6 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 
     private void stop()
     {
-        setState(States.STOP);
         Intent intent = new Intent(mContext, PlaybackService.class);
         intent.setAction(PlaybackService.ACTION_STOP);
         mContext.startService(intent);
@@ -209,17 +208,31 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
 
             switch (statusCode)
             {
-                case ERROR_NO_CONNECTION:
-
-                    Utils.showToast(context, MSG_ERROR_NO_CONNECTION);
+                case PLAY:
+                    setState(States.PLAY);
+                    setPlayButtonIcon();
                     break;
+
+                case PAUSE:
+                    setState(States.PAUSE);
+                    setPlayButtonIcon();
+                    break;
+
+                case STOP:
+                    setState(States.STOP);
+                    setPlayButtonIcon();
+                    break;
+
+                case ERROR_NO_CONNECTION:
+                    Utils.showToast(context, MSG_ERROR_NO_CONNECTION);
+                    setState(States.STOP);
+                    setPlayButtonIcon();
 
                 default:
                     Utils.showToast(context, MSG_ERROR_UNKNOWN);
+                    setState(States.STOP);
+                    setPlayButtonIcon();
             }
-
-            setState(States.STOP);
-            setPlayButtonIcon();
         }
     }
 }
