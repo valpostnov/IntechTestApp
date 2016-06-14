@@ -19,7 +19,7 @@ import com.postnov.android.intechtestapp.melodie.interfaces.MelodiesPresenter;
 import com.postnov.android.intechtestapp.melodie.interfaces.MelodiesView;
 import com.postnov.android.intechtestapp.player.PlayerActivity;
 import com.postnov.android.intechtestapp.utils.NetworkManager;
-import com.postnov.android.intechtestapp.utils.Utils;
+import com.postnov.android.intechtestapp.utils.UiExtensions;
 
 import java.util.List;
 
@@ -27,8 +27,7 @@ import static com.postnov.android.intechtestapp.utils.Const.DEFAULT_LIMIT_MELODI
 import static com.postnov.android.intechtestapp.utils.Const.NEXT_COUNT_MELODIES;
 
 public class MelodiesFragment extends Fragment implements MelodiesView,
-        MelodiesAdapter.OnItemClickListener,
-        View.OnClickListener,
+        MelodiesAdapter.OnItemClickListener, View.OnClickListener,
         MelodiesAdapter.OnEndlessListener
 {
     public static final String EXTRA_MELODIE = "extra_melodie_object";
@@ -107,7 +106,7 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
     @Override
     public void showError(String error)
     {
-        Utils.showToast(getContext(), error);
+        UiExtensions.showToast(getContext(), error);
     }
 
     @Override

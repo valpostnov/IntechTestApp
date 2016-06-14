@@ -1,14 +1,11 @@
 package com.postnov.android.intechtestapp.player;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +17,10 @@ import com.bumptech.glide.Glide;
 import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
-import com.postnov.android.intechtestapp.utils.Utils;
-
-import static com.postnov.android.intechtestapp.player.PlaybackService.EXTENDED_DATA_STATUS;
-import static com.postnov.android.intechtestapp.utils.Const.ERROR_NO_CONNECTION;
-import static com.postnov.android.intechtestapp.utils.Const.ERROR_UNKNOWN;
-import static com.postnov.android.intechtestapp.utils.Const.MSG_ERROR_NO_CONNECTION;
-import static com.postnov.android.intechtestapp.utils.Const.MSG_ERROR_UNKNOWN;
 
 public class PlayerFragment extends Fragment implements View.OnClickListener
 {
     public static final String EXTRA_DEMO_URL = "extra_demo_url";
-
-    private PlaybackStateReceiver mPlaybackStateReceiver;
     private Context mContext;
     private Melodie mMelodie;
 
@@ -67,20 +55,6 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-        registerLBReceiver();
-    }
-
-    @Override
-    public void onDestroyView()
-    {
-        unregisterLBReceiver();
-        super.onDestroyView();
-    }
-
-    @Override
     public void onClick(View v)
     {
         switch (v.getId())
@@ -97,25 +71,6 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
                 play();
                 break;
         }
-    }
-
-    private void initViews(View view)
-    {
-        ImageView albumPic = (ImageView) view.findViewById(R.id.player_album_pic);
-        TextView artist = (TextView) view.findViewById(R.id.player_artist);
-        TextView melodie = (TextView) view.findViewById(R.id.player_melodie_title);
-
-        FloatingActionButton playButton = (FloatingActionButton) view.findViewById(R.id.play_button);
-        playButton.setOnClickListener(this);
-
-        ImageButton stopPlayback = (ImageButton) view.findViewById(R.id.stop_button);
-        ImageButton pausePlayback = (ImageButton) view.findViewById(R.id.pause_button);
-        stopPlayback.setOnClickListener(this);
-        pausePlayback.setOnClickListener(this);
-
-        Glide.with(getContext()).load(mMelodie.getPicUrl()).into(albumPic);
-        artist.setText(mMelodie.getArtist());
-        melodie.setText(mMelodie.getTitle());
     }
 
     private void play()
@@ -140,39 +95,22 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         mContext.startService(intent);
     }
 
-    private void registerLBReceiver()
+    private void initViews(View view)
     {
-        IntentFilter statusFilter = new IntentFilter(PlaybackService.BROADCAST_ACTION);
-        statusFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        mPlaybackStateReceiver = new PlaybackStateReceiver();
-        LocalBroadcastManager.getInstance(mContext).registerReceiver(mPlaybackStateReceiver, statusFilter);
-    }
+        ImageView album = (ImageView) view.findViewById(R.id.player_album_pic);
+        TextView artist = (TextView) view.findViewById(R.id.player_artist);
+        TextView melodie = (TextView) view.findViewById(R.id.player_melodie_title);
 
-    private void unregisterLBReceiver()
-    {
-        if (mPlaybackStateReceiver != null)
-        {
-            LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mPlaybackStateReceiver);
-            mPlaybackStateReceiver = null;
-        }
-    }
+        ImageButton stopBtn = (ImageButton) view.findViewById(R.id.stop_button);
+        ImageButton pauseBtn = (ImageButton) view.findViewById(R.id.pause_button);
+        FloatingActionButton playBtn = (FloatingActionButton) view.findViewById(R.id.play_button);
 
-    private class PlaybackStateReceiver extends BroadcastReceiver
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            int statusCode = intent.getIntExtra(EXTENDED_DATA_STATUS, ERROR_UNKNOWN);
+        playBtn.setOnClickListener(this);
+        stopBtn.setOnClickListener(this);
+        pauseBtn.setOnClickListener(this);
 
-            switch (statusCode)
-            {
-                case ERROR_NO_CONNECTION:
-                    Utils.showToast(context, MSG_ERROR_NO_CONNECTION);
-                    break;
-
-                default:
-                    Utils.showToast(context, MSG_ERROR_UNKNOWN);
-            }
-        }
+        Glide.with(getContext()).load(mMelodie.getPicUrl()).into(album);
+        artist.setText(mMelodie.getArtist());
+        melodie.setText(mMelodie.getTitle());
     }
 }

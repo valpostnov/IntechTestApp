@@ -12,39 +12,40 @@ import android.view.MenuItem;
 import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
+import com.postnov.android.intechtestapp.utils.BroadcastExtensions;
 
 public class PlayerActivity extends AppCompatActivity
 {
+    private PlaybackStateReceiver mPlaybackStateReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        mPlaybackStateReceiver = new PlaybackStateReceiver();
         initToolbar();
-
-        Melodie melodie = getIntent().getParcelableExtra(MelodiesFragment.EXTRA_MELODIE);
 
         if (savedInstanceState == null)
         {
+            Melodie melodie = getIntent().getParcelableExtra(MelodiesFragment.EXTRA_MELODIE);
             initFragment(PlayerFragment.newInstance(melodie));
         }
     }
 
-    private void initFragment(Fragment fragment)
+    @Override
+    protected void onStart()
     {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.player_container, fragment);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.commit();
+        super.onStart();
+        BroadcastExtensions.registerLBReceiver(this, mPlaybackStateReceiver);
     }
 
-    private void initToolbar()
+    @Override
+    protected void onStop()
     {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.player_toolbar);
-        toolbar.setTitle(R.string.player_title);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        BroadcastExtensions.unregisterLBReceiver(this, mPlaybackStateReceiver);
+        mPlaybackStateReceiver = null;
+        super.onStop();
     }
 
     @Override
@@ -65,5 +66,22 @@ public class PlayerActivity extends AppCompatActivity
         Intent intent = new Intent(this, PlaybackService.class);
         stopService(intent);
         super.onBackPressed();
+    }
+
+    private void initFragment(Fragment fragment)
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.player_container, fragment);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+    }
+
+    private void initToolbar()
+    {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.player_toolbar);
+        toolbar.setTitle(R.string.player_title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
