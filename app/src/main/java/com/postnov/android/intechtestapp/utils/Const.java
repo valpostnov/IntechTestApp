@@ -10,4 +10,7 @@ public interface Const
 
     int ERROR_NO_CONNECTION = -10;
     int ERROR_UNKNOWN = -1;
+
+    int NEXT_COUNT_MELODIES = 10;
+    int DEFAULT_LIMIT_MELODIES = 20;
 }

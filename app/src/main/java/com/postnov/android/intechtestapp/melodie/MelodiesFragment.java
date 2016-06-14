@@ -8,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,6 +23,9 @@ import com.postnov.android.intechtestapp.utils.Utils;
 
 import java.util.List;
 
+import static com.postnov.android.intechtestapp.utils.Const.DEFAULT_LIMIT_MELODIES;
+import static com.postnov.android.intechtestapp.utils.Const.NEXT_COUNT_MELODIES;
+
 public class MelodiesFragment extends Fragment implements MelodiesView,
         MelodiesAdapter.OnItemClickListener,
         View.OnClickListener,
@@ -32,8 +34,6 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
     public static final String EXTRA_MELODIE = "extra_melodie_object";
     private static final int SPAN_COUNT_DEF = 2;
     private static final int SPAN_COUNT_THREE = 3;
-    private static final int START_COUNT_MELODIES = 20;
-    private static final int NEXT_COUNT_MELODIES = 10;
 
     private MelodiesAdapter mMelodiesAdapter;
     private ProgressDialog mProgressDialog;
@@ -55,6 +55,7 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         isLandOrient = getContext().getResources().getBoolean(R.bool.landscape_orient);
         mPresenter = new MelodiesPresenterImpl(
                 Injection.provideDataSource(),
@@ -66,7 +67,7 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
     {
         super.onResume();
         mPresenter.bind(this);
-        mPresenter.fetchMelodies(START_COUNT_MELODIES, 0);
+        mPresenter.fetchMelodies(DEFAULT_LIMIT_MELODIES, 0);
     }
 
     @Override
@@ -157,7 +158,7 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
     @Override
     public void onClick(View v)
     {
-        mPresenter.fetchMelodies(START_COUNT_MELODIES, 0);
+        mPresenter.fetchMelodies(DEFAULT_LIMIT_MELODIES, 0);
     }
 
     @Override

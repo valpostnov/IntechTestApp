@@ -49,7 +49,7 @@ public class MelodiesPresenterImpl implements MelodiesPresenter
                         public void onError(Throwable e) 
                         {
                             mView.hideProgressDialog();
-                            mView.showMelodies(null);
+
                             mView.showError(e.getMessage());
                         }
 

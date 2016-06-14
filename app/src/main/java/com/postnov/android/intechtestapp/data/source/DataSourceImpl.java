@@ -9,6 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.functions.Action1;
 
+import static com.postnov.android.intechtestapp.utils.Const.DEFAULT_LIMIT_MELODIES;
+
+
 /**
  * Created by platon on 10.06.2016.
  */
@@ -18,7 +21,6 @@ public class DataSourceImpl implements DataSource
 
     private MelodiesApi mApi;
     private Response mResponseCache;
-    private static final int DEFAULT_LIMIT = 20;
     private static final String ENDPOINT = "url";
 
     public static DataSourceImpl getInstance()
@@ -45,7 +47,7 @@ public class DataSourceImpl implements DataSource
     @Override
     public Observable<Response> getMelodies(int limit, int from)
     {
-        if (limit == DEFAULT_LIMIT && mResponseCache != null)
+        if (limit == DEFAULT_LIMIT_MELODIES && mResponseCache != null)
         {
             return Observable.just(mResponseCache);
         }

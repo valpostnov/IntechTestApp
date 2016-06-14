@@ -1,11 +1,14 @@
 package com.postnov.android.intechtestapp.data;
 
 import com.postnov.android.intechtestapp.Injection;
+import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.data.entity.Response;
 import com.postnov.android.intechtestapp.data.source.DataSource;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import rx.observers.TestSubscriber;
 
@@ -19,8 +22,8 @@ public class DataSourceUnitTest
     public void setupDataSource()
     {
         mDataSource = Injection.provideDataSource();
-        mLimit = 10;
-        mFrom = 21;
+        mLimit = 20;
+        mFrom = 0;
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.postnov.android.intechtestapp.melodie;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHolder>
 {
-    private List<Melodie> mMelodies;
+    private List<Melodie> mMelodieList;
     private View mEmptyView;
     private Context mContext;
     private int mItemId;
@@ -36,7 +35,7 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
     {
         mContext = context;
         mItemId = itemId;
-        mMelodies = new ArrayList<>();
+        mMelodieList = new ArrayList<>();
     }
 
     @Override
@@ -65,28 +64,24 @@ public class MelodiesAdapter extends RecyclerView.Adapter<MelodiesAdapter.ViewHo
     @Override
     public int getItemCount()
     {
-        if (mMelodies == null) return 0;
-        return mMelodies.size();
+        if (mMelodieList == null) return 0;
+        return mMelodieList.size();
     }
 
     public List<Melodie> getList()
     {
-        return mMelodies;
+        return mMelodieList;
     }
 
     public void swapList(List<Melodie> newList)
     {
-        if (mLastListSize == 0 || mLastListSize == newList.size())
+        if (newList != null && mLastListSize != newList.size())
         {
-            mMelodies = newList;
-        }
-        else
-        {
-            mMelodies.addAll(newList);
+            mMelodieList.addAll(newList);
+            notifyDataSetChanged();
+            mLastListSize = mMelodieList.size();
         }
 
-        notifyDataSetChanged();
-        mLastListSize = mMelodies.size();
         mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 

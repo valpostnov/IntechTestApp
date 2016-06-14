@@ -227,6 +227,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
                     Utils.showToast(context, MSG_ERROR_NO_CONNECTION);
                     setState(States.STOP);
                     setPlayButtonIcon();
+                    break;
 
                 default:
                     Utils.showToast(context, MSG_ERROR_UNKNOWN);
