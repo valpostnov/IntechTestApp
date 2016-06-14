@@ -120,6 +120,18 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
         startActivity(intent);
     }
 
+    @Override
+    public void onClick(View v)
+    {
+        mPresenter.fetchMelodies(DEFAULT_LIMIT_MELODIES, 0);
+    }
+
+    @Override
+    public void loadMore(int position)
+    {
+        mPresenter.fetchMelodies(NEXT_COUNT_MELODIES, position + 1);
+    }
+
     private void initViews(View view)
     {
         View emptyView = view.findViewById(R.id.melodies_emptyview);
@@ -152,17 +164,5 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
         mProgressDialog = new ProgressDialog(getContext());
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(getString(R.string.loading_artists));
-    }
-
-    @Override
-    public void onClick(View v)
-    {
-        mPresenter.fetchMelodies(DEFAULT_LIMIT_MELODIES, 0);
-    }
-
-    @Override
-    public void loadMore(int position)
-    {
-        mPresenter.fetchMelodies(NEXT_COUNT_MELODIES, position + 1);
     }
 }
