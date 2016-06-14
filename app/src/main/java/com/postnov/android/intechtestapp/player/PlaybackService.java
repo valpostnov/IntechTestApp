@@ -8,7 +8,6 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.postnov.android.intechtestapp.utils.Const;
 import com.postnov.android.intechtestapp.utils.NetworkManager;
 
 import java.io.IOException;
@@ -17,16 +16,11 @@ import static com.postnov.android.intechtestapp.utils.Const.ERROR_NO_CONNECTION;
 import static com.postnov.android.intechtestapp.utils.Const.ERROR_UNKNOWN;
 
 public class PlaybackService extends Service implements MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener
+        MediaPlayer.OnErrorListener
 {
     public static final String ACTION_PLAY = "com.postnov.action.PLAY";
     public static final String ACTION_PAUSE = "com.postnov.action.PAUSE";
     public static final String ACTION_STOP = "com.postnov.action.STOP";
-
-    public static final int PLAY = 99;
-    public static final int PAUSE = 98;
-    public static final int STOP = 97;
-
     public static final String BROADCAST_ACTION = "com.postnov.action.BROADCAST";
     public static final String EXTENDED_DATA_STATUS = "com.postnov.action.STATUS";
     private static final String TAG = "PlaybackService";
@@ -101,7 +95,6 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.setOnPreparedListener(this);
             mMediaPlayer.setOnErrorListener(this);
-            mMediaPlayer.setOnCompletionListener(this);
             mMediaPlayer.setDataSource(url);
             mMediaPlayer.prepareAsync();
         }
@@ -116,7 +109,6 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
     public void onPrepared(MediaPlayer player)
     {
         player.start();
-        sendStatus(PLAY);
     }
 
     @Override
@@ -128,12 +120,6 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
         return true;
     }
 
-    @Override
-    public void onCompletion(MediaPlayer mp)
-    {
-        sendStatus(STOP);
-    }
-
     private void start(String url)
     {
         if (mCurrentPosition > 0)
@@ -141,10 +127,10 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
             mMediaPlayer.seekTo(mCurrentPosition);
             mMediaPlayer.start();
             mCurrentPosition = 0;
-            sendStatus(PLAY);
         }
         else
         {
+            if (mMediaPlayer != null) mMediaPlayer.reset();
             initMediaPlayer(url);
         }
     }
@@ -155,7 +141,6 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
         {
             mMediaPlayer.pause();
             mCurrentPosition = mMediaPlayer.getCurrentPosition();
-            sendStatus(PAUSE);
         }
     }
 
@@ -165,7 +150,6 @@ public class PlaybackService extends Service implements MediaPlayer.OnPreparedLi
         {
             mMediaPlayer.stop();
             mCurrentPosition = 0;
-            sendStatus(STOP);
         }
     }
 

@@ -40,7 +40,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:id="@+id/button_container">
+
+        <ImageButton
+            android:id="@+id/pause_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/button_pause"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_pause" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/play_button"
@@ -55,13 +64,14 @@
             android:clickable="true"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/stop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="center"
             android:layout_gravity="center_vertical"
-            android:text="@string/button_stop" />
+            android:contentDescription="@string/button_stop"
+            android:src="@drawable/ic_stop" />
 
         </LinearLayout>
 </LinearLayout>

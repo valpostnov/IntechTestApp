@@ -14,7 +14,6 @@ import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

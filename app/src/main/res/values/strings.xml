@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">Мелодии</string>
     <string name="artists_empty_view">Список пуст</string>
-    <string name="loading_artists">Загрузка...</string>
+    <string name="loading_artists">Загрузка</string>
     <string name="action_change_layout">Сменить вид</string>
-    <string name="main_title">Рингтоны</string>
-    <string name="player_title">Воспроизведение</string>
+    <string name="main_title">Мелодии</string>
+    <string name="player_title">Сейчас играет</string>
     <string name="action_load_more">Загрузить еще</string>
     <string name="button_stop">Стоп</string>
     <string name="button_refresh">Обновить</string>
     <string name="action_settings">Настройки</string>
+    <string name="button_pause">Пауза</string>
 </resources>
