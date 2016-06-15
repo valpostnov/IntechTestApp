@@ -1,6 +1,7 @@
 package com.postnov.android.intechtestapp.melodie;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -56,9 +57,8 @@ public class MelodiesFragment extends Fragment implements MelodiesView,
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         isLandOrient = getContext().getResources().getBoolean(R.bool.landscape_orient);
-        mPresenter = new MelodiesPresenterImpl(
-                Injection.provideDataSource(),
-                NetworkManager.getInstance(getContext()));
+        NetworkManager networkManager = NetworkManager.getInstance(getContext().getApplicationContext());
+        mPresenter = new MelodiesPresenterImpl(Injection.provideDataSource(), networkManager);
     }
 
     @Override
