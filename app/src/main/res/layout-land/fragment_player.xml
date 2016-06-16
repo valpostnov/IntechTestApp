@@ -48,14 +48,6 @@
         android:layout_below="@+id/player_artist"
         android:gravity="center_vertical">
 
-        <ImageButton
-            android:id="@+id/pause_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/button_pause"
-            android:src="@drawable/ic_pause"
-            />
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/play_button"
             android:layout_width="wrap_content"
@@ -68,11 +60,11 @@
             android:layout_margin="@dimen/fab_margin"
             android:clickable="true"
             />
-        <ImageButton
+        <Button
             android:id="@+id/stop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/button_stop"
+            android:text="@string/button_stop"
             android:src="@drawable/ic_stop"
             />
     </LinearLayout>

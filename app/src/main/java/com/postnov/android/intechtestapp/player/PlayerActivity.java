@@ -12,18 +12,14 @@ import android.view.MenuItem;
 import com.postnov.android.intechtestapp.R;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
-import com.postnov.android.intechtestapp.utils.BroadcastExtensions;
 
 public class PlayerActivity extends AppCompatActivity
 {
-    private PlaybackStateReceiver mPlaybackStateReceiver;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        mPlaybackStateReceiver = new PlaybackStateReceiver();
         initToolbar();
 
         if (savedInstanceState == null)
@@ -31,21 +27,6 @@ public class PlayerActivity extends AppCompatActivity
             Melodie melodie = getIntent().getParcelableExtra(MelodiesFragment.EXTRA_MELODIE);
             initFragment(PlayerFragment.newInstance(melodie));
         }
-    }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        BroadcastExtensions.registerLBReceiver(this, mPlaybackStateReceiver);
-    }
-
-    @Override
-    protected void onStop()
-    {
-        BroadcastExtensions.unregisterLBReceiver(this, mPlaybackStateReceiver);
-        mPlaybackStateReceiver = null;
-        super.onStop();
     }
 
     @Override

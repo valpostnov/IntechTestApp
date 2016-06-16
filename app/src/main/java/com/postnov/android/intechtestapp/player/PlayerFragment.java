@@ -9,20 +9,39 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.postnov.android.intechtestapp.MelodiesApp;
 import com.postnov.android.intechtestapp.R;
+import com.postnov.android.intechtestapp.bus.RxBus;
+import com.postnov.android.intechtestapp.bus.events.ErrorEvent;
+import com.postnov.android.intechtestapp.bus.events.PlaybackEvent;
 import com.postnov.android.intechtestapp.data.entity.Melodie;
 import com.postnov.android.intechtestapp.melodie.MelodiesFragment;
+import com.postnov.android.intechtestapp.utils.UiExtensions;
+
+import rx.Subscription;
+import rx.functions.Action1;
+
+import static com.postnov.android.intechtestapp.bus.events.PlaybackEvent.PLAY;
+import static com.postnov.android.intechtestapp.bus.events.PlaybackEvent.STOP;
+import static com.postnov.android.intechtestapp.player.PlaybackService.ACTION_PAUSE;
+import static com.postnov.android.intechtestapp.player.PlaybackService.ACTION_PLAY;
+import static com.postnov.android.intechtestapp.player.PlaybackService.ACTION_STOP;
 
 public class PlayerFragment extends Fragment implements View.OnClickListener
 {
     public static final String EXTRA_DEMO_URL = "extra_demo_url";
+
     private Context mContext;
+    private FloatingActionButton mPlayBtn;
     private Melodie mMelodie;
+    private RxBus mRxBus;
+    private Subscription mRxBusSubscription;
+    private int mState = STOP;
 
     public PlayerFragment() {}
 
@@ -42,6 +61,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         mContext = getContext();
+        mRxBus = MelodiesApp.getEventBus();
         mMelodie = getArguments().getParcelable(MelodiesFragment.EXTRA_MELODIE);
         play();
     }
@@ -55,6 +75,35 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
+    public void onStart()
+    {
+        super.onStart();
+        mRxBusSubscription = mRxBus.toObservable().subscribe(new Action1<Object>()
+        {
+            @Override
+            public void call(Object event)
+            {
+                if (event instanceof ErrorEvent)
+                {
+                    UiExtensions.showToast(mContext, ((ErrorEvent) event).getError());
+                }
+                else if (event instanceof PlaybackEvent)
+                {
+                    mState = ((PlaybackEvent) event).getState();
+                    setPlayButtonIcon(mState);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        mRxBusSubscription.unsubscribe();
+    }
+
+    @Override
     public void onClick(View v)
     {
         switch (v.getId())
@@ -63,12 +112,11 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
                 stop();
                 break;
 
-            case R.id.pause_button:
-                pause();
-                break;
-
             case R.id.play_button:
-                play();
+
+                if (mState == PLAY) pause();
+                else play();
+
                 break;
         }
     }
@@ -76,22 +124,22 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
     private void play()
     {
         Intent intent = new Intent(mContext, PlaybackService.class);
-        intent.setAction(PlaybackService.ACTION_PLAY);
         intent.putExtra(EXTRA_DEMO_URL, mMelodie.getDemoUrl());
+        intent.setAction(ACTION_PLAY);
         mContext.startService(intent);
     }
 
     private void pause()
     {
         Intent intent = new Intent(mContext, PlaybackService.class);
-        intent.setAction(PlaybackService.ACTION_PAUSE);
+        intent.setAction(ACTION_PAUSE);
         mContext.startService(intent);
     }
 
     private void stop()
     {
         Intent intent = new Intent(mContext, PlaybackService.class);
-        intent.setAction(PlaybackService.ACTION_STOP);
+        intent.setAction(ACTION_STOP);
         mContext.startService(intent);
     }
 
@@ -101,16 +149,20 @@ public class PlayerFragment extends Fragment implements View.OnClickListener
         TextView artist = (TextView) view.findViewById(R.id.player_artist);
         TextView melodie = (TextView) view.findViewById(R.id.player_melodie_title);
 
-        ImageButton stopBtn = (ImageButton) view.findViewById(R.id.stop_button);
-        ImageButton pauseBtn = (ImageButton) view.findViewById(R.id.pause_button);
-        FloatingActionButton playBtn = (FloatingActionButton) view.findViewById(R.id.play_button);
+        Button stopBtn = (Button) view.findViewById(R.id.stop_button);
+        mPlayBtn = (FloatingActionButton) view.findViewById(R.id.play_button);
+        setPlayButtonIcon(mState);
 
-        playBtn.setOnClickListener(this);
+        mPlayBtn.setOnClickListener(this);
         stopBtn.setOnClickListener(this);
-        pauseBtn.setOnClickListener(this);
 
         Glide.with(getContext()).load(mMelodie.getPicUrl()).into(album);
         artist.setText(mMelodie.getArtist());
         melodie.setText(mMelodie.getTitle());
+    }
+
+    private void setPlayButtonIcon(int state)
+    {
+        mPlayBtn.setImageResource(state == PLAY ? R.drawable.ic_pause : R.drawable.ic_play);
     }
 }

@@ -8,9 +8,6 @@ public interface Const
     String MSG_ERROR_UNKNOWN = "Что-то пошло не так, перезапустите приложение.";
     String MSG_ERROR_NO_CONNECTION = "Отсутствует подключение к интернету";
 
-    int ERROR_NO_CONNECTION = -10;
-    int ERROR_UNKNOWN = -1;
-
     int NEXT_COUNT_MELODIES = 10;
     int DEFAULT_LIMIT_MELODIES = 20;
 }
